@@ -32,9 +32,13 @@ function cellClick() {
         return;
     }
 
-    updateCell(this, cellIndex);            //OTHERWISE, we will invoke updateCell(), passing 'this' as argument as well as the cell's index
-    changePlayer();
-    checkWinner();                           //invoke checkWinner()
+    updateCell(this, cellIndex);                         //OTHERWISE, we will invoke updateCell(), passing 'this' as argument as well as the cell's index
+    changePlayer();                                     //change player each round
+    
+    if (checkWinner() !== false) {                           //invoke checkWinner(), !== false because last line of checkWinner()
+            changePlayer();                                 //this fixes bug of incorrect winner being displayed, have to change player again
+            gameStatus.textContent = `${currentPlayer} is the winner!`;
+    }                                      
                              
 }
 
@@ -50,13 +54,16 @@ function changePlayer() {
 }
 
 
-function checkWinner(currentPlayer) {
-    return winCombinations.some(combination => {
-        return combination.every(index => {
-            return 
-        })
-    })
+function checkWinner() {                   
+    for(const condition of winCombinations) {
+        let [a, b, c] = condition
 
+        if(gameboard[a] && (gameboard[a] == gameboard[b] && gameboard[a] == gameboard[c])) {
+
+            return [a, b, c]
+        }
+    }
+    return false;
 }
 
 function gameReset() {
@@ -68,15 +75,22 @@ function gameReset() {
 };
 
 
-//need to work on changePlayer(), its bugged. when X wins, it says O is the winner. 
 
 
 
 
+// function checkWinner(currentPlayer) {
+//     for(i=0; i<winCombinations.length; i++) {
+//         if ()                                        //loop through wincombinations to see if any of them have been satisfied
+ 
+//     }
+// }
 
 
-
-
+//okay what do I need to do with checkWinner function?
+        //check whose turn it is by passing in current player,
+        //loop through wincombinations to see if any of them have been satisfied
+        //if win condition has been satisfied, update gameStatus to ' `${currentPlayer} is the winner!`' 
 
 
 
