@@ -61,3 +61,7 @@ body {
     background-color:rgba(12, 28, 99, 0.683);
     cursor:pointer;
 }
+
+#gameStatus {
+    font-size: larger;
+}

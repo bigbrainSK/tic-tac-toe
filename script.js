@@ -11,36 +11,36 @@ const winCombinations = [
     [2,4,6],
     [0,4,8]
 ];
+const Gameboard = (() => {
+    let gameboard = ['', '', '', '', '', '', '', '', '',];
+    let currentPlayer = 'X';
+    let running = false; 
 
-let gameboard = ['', '', '', '', '', '', '', '', '',];
-let currentPlayer = 'X';
-let running = false; 
+    initialize();
 
-initialize();
+    function initialize() {
+        cells.forEach(cell => cell.addEventListener("click", cellClick));       //for each cell, we'll take our cell and add an event listener
+        restartButton.addEventListener("click", gameReset);
+        gameStatus.textContent = `${currentPlayer}'s turn`;
+        running = true;                                                     //so game is considered running
+    };
 
-function initialize() {
-    cells.forEach(cell => cell.addEventListener("click", cellClick));       //for each cell, we'll take our cell and add an event listener
-    restartButton.addEventListener("click", gameReset);
-    gameStatus.textContent = `${currentPlayer}'s turn`;
-    running = true;                                                 //so game is considered running
-};
+    function cellClick() {
+        const cellIndex = this.getAttribute('cellIndex');           //this for whatever cell that we click on, getting index attribute from html
 
-function cellClick() {
-    const cellIndex = this.getAttribute('cellIndex');           //this for whatever cell that we click on, getting index attribute from html
+        if(gameboard[cellIndex] != '' || !running) {            //if the gameboard array DOES NOT have an empty cell, OR if game is not running, then we return (not do anything)
+            return;
+        }
 
-    if(gameboard[cellIndex] != '' || !running) {            //if the gameboard array DOES NOT have an empty cell, OR if game is not running, then we return (not do anything)
-        return;
+        updateCell(this, cellIndex);                         //OTHERWISE, we will invoke updateCell(), passing 'this' as argument as well as the cell's index
+        changePlayer();                                     //change player each round
+        
+        if (checkWinner() !== false) {                           //invoke checkWinner(), !== false because last line of checkWinner()
+                changePlayer();                                 //this fixes bug of incorrect winner being displayed, have to change player again
+                gameStatus.textContent = `${currentPlayer} is the winner!`;
+        }                                      
+                                
     }
-
-    updateCell(this, cellIndex);                         //OTHERWISE, we will invoke updateCell(), passing 'this' as argument as well as the cell's index
-    changePlayer();                                     //change player each round
-    
-    if (checkWinner() !== false) {                           //invoke checkWinner(), !== false because last line of checkWinner()
-            changePlayer();                                 //this fixes bug of incorrect winner being displayed, have to change player again
-            gameStatus.textContent = `${currentPlayer} is the winner!`;
-    }                                      
-                             
-}
 
 function updateCell(cell, index) {
     gameboard[index] = currentPlayer;      //take the index of the gameboard, set it to current player - updating our placeholders
@@ -74,58 +74,10 @@ function gameReset() {
     running = true;
 };
 
+}) ();
 
 
 
-
-
-// function checkWinner(currentPlayer) {
-//     for(i=0; i<winCombinations.length; i++) {
-//         if ()                                        //loop through wincombinations to see if any of them have been satisfied
- 
-//     }
-// }
-
-
-//okay what do I need to do with checkWinner function?
-        //check whose turn it is by passing in current player,
-        //loop through wincombinations to see if any of them have been satisfied
-        //if win condition has been satisfied, update gameStatus to ' `${currentPlayer} is the winner!`' 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const Gameboard = ( () => {
-
-//     let gameboard = ['', '', '', '', '', '', '', '', '',];
-//     const render = () => {
-//         let board = '';
-//         gameboard.forEach((cell, index) => {
-//             board += `x`;
-//         })
-//         document.querySelector('#gameTable').innerHTML = board;
-//     }
-//         return {
-//             render
-//         }
-// }) ();
-
-
-// const createPlayer = (name, mark) => {
-//     return {
-//         name, 
-//         mark
-//     }
-// }
 
 // const gameController = (() => {
 //     let players = [];
